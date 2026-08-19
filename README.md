@@ -1,7 +1,8 @@
 # 🏎️ Grand Prix Companion
 
 **Grand Prix Companion** is a Java Swing desktop application designed to display real-time race telemetry, driver standings, and tire strategy progression parsed directly from event CSV data. It includes a user authentication system for secure login and session management.
-**Project by
+
+**Project by**
 * Nur A Afsanur Shreya
 * Yusha Nurullah Ayan
 * Tawfique Omar Tazwar
