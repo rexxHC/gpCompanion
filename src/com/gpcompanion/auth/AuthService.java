@@ -17,12 +17,14 @@ public class AuthService {
     }
 
     private String generateSalt() {
+        // SecureRandom — pulls from an OS entropy source
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
 
         StringBuilder builder = new StringBuilder();
         for (byte b : salt) {
+            // converts raw bytes into a hex string so it can be stored safely
             builder.append(String.format("%02x", b));
         }
 
@@ -32,6 +34,7 @@ public class AuthService {
     private String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest((salt + password).getBytes());
+        // the salt is concatenated onto the password before hashing
 
         StringBuilder hashBuilder = new StringBuilder();
         for (byte b : hash) {
@@ -50,11 +53,11 @@ public class AuthService {
             throw new IllegalArgumentException("Username and password cannot be empty");
         }
 
-        if (username.length() != 16 || password.length() != 16) {
+        if (username.length() >= 16 || password.length() >= 16) {
             throw new IllegalArgumentException("Username and password cannot exceed 16 characters");
         }
 
-        if(username.contains(" ") || username.contains("\n")) {
+        if (username.contains(" ") || username.contains("\n")) {
             throw new IllegalArgumentException("Username cannot contain spaces / new lines");
         }
     }
@@ -66,7 +69,7 @@ public class AuthService {
             throw new DuplicateUserException("Error! " + username + " already exists");
         }
 
-        String salt = generateSalt();
+        String salt = generateSalt(); // salt generated once per user, per registration
         UserAccount account = new UserAccount(username, hashPassword(password, salt), salt);
         credentials.saveUserAccount(account);
     }

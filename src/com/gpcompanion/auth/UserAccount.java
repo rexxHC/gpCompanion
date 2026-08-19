@@ -4,6 +4,7 @@ package com.gpcompanion.auth;
 /// data is encapsulated and does not have any mutator methods, can only be accessed through getters
 
 public class UserAccount {
+    // final fields, set once in the constructor, never reassigned.
     private final String username;
     private final String passwordHash;
     private final String salt;

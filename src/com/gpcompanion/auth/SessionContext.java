@@ -1,8 +1,10 @@
 package com.gpcompanion.auth;
 
 /// session context contains data and methods pertaining to the current logged user
+/// tracks whichever UserAccount is currently logged in
 
 public class SessionContext {
+
     private UserAccount currentUser;
 
     public void setCurrentUser(UserAccount currentUser) {
@@ -13,11 +15,17 @@ public class SessionContext {
         return currentUser;
     }
 
+    // true on successful log in
     public boolean isLoggedIn() {
-        return this.currentUser != null;
+        if (currentUser != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    // clears logged-in user
     public void clear() {
-        this.currentUser = null;
+        currentUser = null;
     }
 }

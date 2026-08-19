@@ -4,6 +4,8 @@ import com.gpcompanion.exceptions.*;
 
 import java.security.NoSuchAlgorithmException;
 
+/// sits between the GUI and AuthService, GUI only directly interacts with this class
+
 public class AuthController {
     private final AuthService authService;
     private final SessionContext session;

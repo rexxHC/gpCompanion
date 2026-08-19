@@ -5,14 +5,14 @@ import java.io.*;
 
 /// implements UserCredentialStore
 
-public class FileUserCredentialStore implements UserCredentialStore{
+public class FileUserCredentialStore implements UserCredentialStore {
     private final String filePath;
-    private final Map<String, UserAccount> cache;
+    private final Map<String, UserAccount> cache; // cache holds every user in memory
 
     public FileUserCredentialStore(String filePath, Map<String, UserAccount> cache) {
         this.filePath = filePath;
         this.cache = cache;
-        loadAll();
+        loadAll(); // loads the cache from users.txt
     }
 
     public void loadAll() {
@@ -23,9 +23,11 @@ public class FileUserCredentialStore implements UserCredentialStore{
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            // try block automatically closes the reader even if there is an exception
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(",");
+                // each line formatted into -> [username, passwordHash, salt]
                 UserAccount account = new UserAccount(tokens[0], tokens[1], tokens[2]);
                 cache.put(account.getUsername(), account);
             }
@@ -38,6 +40,7 @@ public class FileUserCredentialStore implements UserCredentialStore{
         File file = new File(filePath);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (UserAccount account : cache.values()) {
+                // rewrites the file every time
                 String line = String.join(",", account.getUsername(), account.getPasswordHash(), account.getSalt());
                 writer.write(line);
                 writer.newLine();
@@ -49,16 +52,19 @@ public class FileUserCredentialStore implements UserCredentialStore{
 
     @Override
     public boolean exists(String username) {
+        // O(1) lookup time since a map is used
         return cache.containsKey(username);
     }
 
     @Override
     public Optional<UserAccount> findByUsername(String username) {
+        // Optional wraps the possible null value and forces an explicit handling of the error
         return Optional.ofNullable(cache.get(username));
     }
 
     @Override
     public void saveUserAccount(UserAccount account) {
+        // updates the memory then writes to the disk
         cache.put(account.getUsername(), account);
         saveAll();
     }
