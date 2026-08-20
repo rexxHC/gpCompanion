@@ -85,10 +85,10 @@ public class App {
             RaceLoader loader = new RaceLoader();
             RaceEngine engine = new RaceEngine(loader.load("race_data.csv"));
             swapScreen(frame, new RaceUI(engine, session, new Runnable() {
-                public void run() {
-                    showWelcome(frame, authController, session);
-                }
-            }));
+                            public void run() {
+                                showWelcome(frame, authController, session);
+                            }
+                        }, authController));
         } catch (RaceDataException ex) {
             JOptionPane.showMessageDialog(frame, "Could not load race data: " + ex.getMessage());
             showWelcome(frame, authController, session);

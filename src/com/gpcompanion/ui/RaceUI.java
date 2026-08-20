@@ -15,7 +15,7 @@ import java.awt.geom.RoundRectangle2D;
 public class RaceUI extends JPanel {
     private boolean showGap = true;
 
-    public RaceUI(final RaceEngine engine, final SessionContext session, final Runnable onLogout) {
+    public RaceUI(final RaceEngine engine, final SessionContext session, final Runnable onLogout, final AuthController authController) {
         Color bgColor = new Color(26, 26, 26);
         Color fgColor = new Color(220, 220, 220);
         Color neonYellow = new Color(200, 255, 0);
@@ -169,7 +169,7 @@ public class RaceUI extends JPanel {
         logoutBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 timer.stop();
-                session.clear();
+                authController.handleLogout();
                 onLogout.run();
             }
         });

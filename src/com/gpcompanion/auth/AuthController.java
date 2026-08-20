@@ -19,6 +19,10 @@ public class AuthController {
         authService.login(username, password);
     }
 
+    public void handleLogout() {
+        session.clear();
+    }
+
     public void handleRegister(String username, String password) throws DuplicateUserException, NoSuchAlgorithmException {
         authService.register(username, password);
     }
